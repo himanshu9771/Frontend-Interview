@@ -1,35 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import BlogLists from "./components/bloglist";
+import BlogDetail from "./components/blogdetail";
+import CreateBlogForm from "./components/createblogform";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [selectedBlogId, setSelectedBlogId] = useState<number | null>(null);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="min-h-screen bg-gray-50 p-6">
+      <h1 className="text-3xl font-bold text-center mb-6">
+        CA Monk Blog
+      </h1>
 
-export default App
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* LEFT PANEL */}
+        <div className="space-y-6">
+          <BlogLists onSelect={setSelectedBlogId} />
+          <CreateBlogForm />
+        </div>
+
+        {/* RIGHT PANEL */}
+        <div className="md:col-span-2 bg-white p-6 rounded-lg shadow">
+          <BlogDetail blogId={selectedBlogId} />
+        </div>
+      </div>
+    </div>
+  );
+}
