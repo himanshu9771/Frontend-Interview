@@ -12,7 +12,7 @@ export default function BlogLists({
   if (isLoading)
     return <Skeleton className="h-[200px] w-full rounded-lg" />;
 
-  if (isError) return <p>Error loading blogs</p>;
+  if (isError) return <p className="text-red-400">Error loading blogs</p>;
 
   return (
     <div className="space-y-4">

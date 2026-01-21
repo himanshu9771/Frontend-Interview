@@ -1,35 +1,70 @@
 import { useQuery } from "@tanstack/react-query";
 import { getBlogById } from "@/api/blogs";
 
-export default function BlogDetail({ blogId }: { blogId: number | null }) {
+export default function BlogDetail({ blogId }: { blogId: number }) {
   const { data, isLoading } = useQuery({
     queryKey: ["blog", blogId],
-    queryFn: () => getBlogById(blogId!),
-    enabled: !!blogId,
+    queryFn: () => getBlogById(blogId),
   });
 
-  if (!blogId) return <p>Select a blog to read</p>;
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <p className="text-slate-400">Loading...</p>;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 text-slate-200">
+
+      {/* COVER IMAGE */}
       <img
         src={data?.coverImage}
-        className="rounded-lg w-full h-64 object-cover"
+        alt="cover"
+        className="w-full h-52 md:h-64 object-cover rounded-xl border border-slate-800"
       />
 
-      <h1 className="text-2xl font-bold">{data?.title}</h1>
+      {/* TITLE */}
+      <h1 className="text-2xl md:text-3xl font-bold text-slate-100">
+        {data?.title}
+      </h1>
 
-      <p className="text-sm text-muted-foreground">
-        {data?.category.join(", ")} |{" "}
-        {new Date(data!.date).toDateString()}
+      {/* META */}
+      <div className="text-sm flex flex-wrap gap-2 items-center">
+        <span className="text-indigo-400">
+          {data?.category.join(", ")}
+        </span>
+        <span className="text-slate-500">|</span>
+        <span className="text-slate-400">
+          {new Date(data!.date).toDateString()}
+        </span>
+      </div>
+
+      {/* DESCRIPTION */}
+      <p className="text-slate-300 leading-relaxed">
+        {data?.description}
       </p>
 
-      <p className="text-gray-700">{data?.description}</p>
-
-      <p className="whitespace-pre-line text-gray-800">
+      {/* CONTENT */}
+      <div className="text-slate-300 whitespace-pre-line leading-loose text-sm md:text-base">
         {data?.content}
-      </p>
+      </div>
+
+      {/* TAGS */}
+      <div className="flex gap-2 flex-wrap pt-2">
+        {data?.category.map((tag: string) => (
+          <span
+            key={tag}
+            className="
+              px-3 py-1
+              text-xs
+              rounded-full
+              bg-slate-800
+              border border-slate-700
+              text-slate-300
+              hover:border-indigo-500/50
+              transition
+            "
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }

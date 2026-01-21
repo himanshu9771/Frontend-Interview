@@ -1,29 +1,33 @@
-import { useState } from "react";
-import BlogLists from "./components/bloglist";
-import BlogDetail from "./components/blogdetail";
-import CreateBlogForm from "./components/createblogform";
+import Navbar from "@/components/ui/navbar";
+import Footer from "@/components/ui/footer";
+import { Routes, Route } from "react-router-dom";
+
+import BlogPage from "@/pages/Blogpage";
+import Tools from "@/pages/Tools";
+import Practice from "@/pages/Practice";
+import Events from "@/pages/Events";
+import JobBoard from "@/pages/JobBoard";
+import CreateBlogPage from "@/pages/CreateBlogPage";
 
 export default function App() {
-  const [selectedBlogId, setSelectedBlogId] = useState<number | null>(null);
-
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">
-        CA Monk Blog
-      </h1>
+    <div className="min-h-screen flex flex-col bg-slate-950">
+      <Navbar />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* LEFT PANEL */}
-        <div className="space-y-6">
-          <BlogLists onSelect={setSelectedBlogId} />
-          <CreateBlogForm />
-        </div>
+      {/* MAIN CONTENT */}
+      <main className="flex-1">
+        <Routes>
+          <Route path="/" element={<BlogPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/create-blog" element={<CreateBlogPage />} />
+          <Route path="/tools" element={<Tools />} />
+          <Route path="/practice" element={<Practice />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/jobs" element={<JobBoard />} />
+        </Routes>
+      </main>
 
-        {/* RIGHT PANEL */}
-        <div className="md:col-span-2 bg-white p-6 rounded-lg shadow">
-          <BlogDetail blogId={selectedBlogId} />
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 }
